@@ -3,32 +3,9 @@ from typing import Any
 from django.db import models
 from django.db.models import UniqueConstraint
 
+from accounting.models.enams import AssetType, Exchange, MarketType
 from accounting.validators import validate_compatible_assets
 from core.models import TimestampedModel
-
-
-class AssetType(models.TextChoices):
-    """Тип актива"""
-
-    STOCK = 'ST', 'Акция'
-    CURRENCY = 'CR', 'Валюта'
-    CRYPTOCURRENCY = 'CC', 'Криптовалюта'
-
-
-class MarketType(models.TextChoices):
-    """Рынок"""
-
-    SPOT = 'SP', 'Спот'
-    FUTURES = 'FU', 'Фьючерсы'
-    OPTIONS = 'OP', 'Опционы'
-    MARGIN = 'MA', 'Маржинальная торговля'
-
-
-class Exchange(models.TextChoices):
-    """Биржа"""
-
-    BYBIT = 'ByBit', 'ByBit'
-    KUCOIN = 'KuCoin', 'KuCoin'
 
 
 class FinancialAsset(TimestampedModel):

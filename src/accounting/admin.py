@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from accounting.models import FinancialAsset, TradingPair
+from accounting.models.positions import Position
 
 
 @admin.register(FinancialAsset)
@@ -44,3 +45,19 @@ class TradingPairAdmin(admin.ModelAdmin):
         'base_asset__ticker',
         'quote_asset__ticker',
     )
+
+
+@admin.register(Position)
+class PositionAdmin(admin.ModelAdmin):
+    list_display = (
+        'trading_pair',
+        'side',
+        'size',
+        'entry_price',
+        'mark_price',
+        'leverage',
+        'data_created_time',
+        'data_updated_time',
+    )
+    list_filter = ('side', 'trading_pair')
+    search_fields = ('trading_pair', 'side')
