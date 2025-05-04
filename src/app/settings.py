@@ -44,7 +44,9 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     'accounting',
+    'bybit',
     'core',
+    'users',
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -84,9 +86,13 @@ DATABASES = {
 }
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SALT_KEY = getenv('SALT_KEY', 'salt-debug')
+
 # ======================================================
 # Пользователи
 # ======================================================
+AUTH_USER_MODEL = 'users.User'
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -218,12 +224,12 @@ LOGGING: dict[str, Any] = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': 'ERROR',
+            'level': 'DEBUG',
             'propagate': False,
         },
         'celery': {
             'handlers': ['console'],
-            'level': 'INFO',
+            'level': 'DEBUG',
             'propagate': False,
         },
         'main': {
@@ -241,6 +247,8 @@ LOGGING: dict[str, Any] = {
 
 if not DEBUG:
     LOGGING['loggers']['django']['handlers'] = ['console', 'telegram', 'timed_rotating_file']
+    LOGGING['loggers']['django']['level'] = 'ERROR'
     LOGGING['loggers']['celery']['handlers'] = ['console', 'celery_file']
+    LOGGING['loggers']['celery']['level'] = 'INFO'
     LOGGING['loggers']['main']['handlers'] = ['console', 'timed_rotating_file']
     LOGGING['loggers']['telegram']['handlers'] = ['console', 'timed_rotating_file', 'telegram']

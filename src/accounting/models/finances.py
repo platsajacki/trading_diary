@@ -148,7 +148,7 @@ class TradingPair(TimestampedModel):
 
         Символ составляется из тикеров базового и котируемого активов, например: 'BTCUSDT'.
         """
-        return f'{self.base_asset.ticker} {self.quote_asset.ticker}'
+        return f'{self.base_asset.ticker}{self.quote_asset.ticker}'
 
     class Meta:
         verbose_name = 'Торговая пара'
