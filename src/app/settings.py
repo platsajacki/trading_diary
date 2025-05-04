@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = getenv('SECRET_KEY', 'secret')
 DEBUG = int(getenv('DEBUG', 0))
-ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1, localhost').split(', ')
+ALLOWED_HOSTS = getenv('ALLOWED_HOSTS', '127.0.0.1, localhost').split(', ')
 SITE_DOMAIN = getenv('SITE_DOMAIN', '')
 SITE_BASE_URL = f'https://{SITE_DOMAIN}/'
 
@@ -43,6 +43,8 @@ THIRD_PARTY_APPS = [
     'rest_framework_api_key',
 ]
 LOCAL_APPS = [
+    'accounting',
+    'core',
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -53,15 +55,12 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-MIDDLEWARE.append('django_prometheus.middleware.PrometheusAfterMiddleware')
 
 # ======================================================
 # URL и WSGI приложения
