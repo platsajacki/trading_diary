@@ -57,8 +57,8 @@ class PositionAdmin(admin.ModelAdmin):
         'entry_price',
         'mark_price',
         'leverage',
-        'data_created_time',
-        'data_updated_time',
+        'opened_at',
+        'closed_at',
     )
     list_filter = ('side', 'trading_pair')
     search_fields = ('trading_pair', 'side')

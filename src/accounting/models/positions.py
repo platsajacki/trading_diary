@@ -1,7 +1,6 @@
-from typing import Any
-
 from django.db import models
 
+from accounting.managers.positions import PositionManager
 from accounting.models.enams import PositionSide
 from accounting.models.finances import TradingPair
 from core.models import TimestampedModel
@@ -96,14 +95,16 @@ class Position(TimestampedModel):
         blank=True,
         help_text='Средняя цена входа за текущую торговую сессию',
     )
-    created_time = models.DateTimeField(
+    opened_at = models.DateTimeField(
         'Время создания позиции',
     )
-    closed_time = models.DateTimeField(
+    closed_at = models.DateTimeField(
         'Время закрытия позиции',
         null=True,
         blank=True,
     )
+
+    objects: PositionManager = PositionManager()
 
     class Meta:
         verbose_name = 'Позиция'
