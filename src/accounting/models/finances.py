@@ -3,6 +3,7 @@ from typing import Any
 from django.db import models
 from django.db.models import UniqueConstraint
 
+from accounting.managers.finances import TradingPairManager
 from accounting.models.enams import AssetType, Exchange, MarketType
 from accounting.validators import validate_compatible_assets
 from core.models import TimestampedModel
@@ -108,6 +109,8 @@ class TradingPair(TimestampedModel):
         'Торгуется',
         default=True,
     )
+
+    objects: TradingPairManager = TradingPairManager()
 
     def clean(self) -> None:
         """Проверяет, что базовый и котируемый активы совместимы."""

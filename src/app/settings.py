@@ -15,7 +15,7 @@ SECRET_KEY = getenv('SECRET_KEY', 'secret')
 DEBUG = int(getenv('DEBUG', 0))
 ALLOWED_HOSTS = getenv('ALLOWED_HOSTS', '127.0.0.1, localhost').split(', ')
 SITE_DOMAIN = getenv('SITE_DOMAIN', '')
-SITE_BASE_URL = f'https://{SITE_DOMAIN}/'
+SITE_BASE_URL = f'https://{SITE_DOMAIN}/' if not DEBUG else f'http://{SITE_DOMAIN}:8000/'
 
 # ======================================================
 # Конфигурация CORS и CSRF
@@ -23,7 +23,7 @@ SITE_BASE_URL = f'https://{SITE_DOMAIN}/'
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
 
-CSRF_TRUSTED_ORIGINS = getenv('CSRF_TRUSTED_ORIGINS', 'http://127.0.0.1:8000, http://localhost:8000').split(', ')
+CSRF_TRUSTED_ORIGINS = getenv('CSRF_TRUSTED_ORIGINS', 'http://127.0.0.1, http://localhost').split(', ')
 
 # ======================================================
 # Установка приложений (Django, сторонние, локальные)
@@ -121,7 +121,7 @@ USE_TZ = True
 # ======================================================
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'core.api.permissions.HasExternalServiceAPIKey',
+        'rest_framework.permissions.IsAuthenticated',
     ]
 }
 

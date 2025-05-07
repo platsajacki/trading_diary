@@ -51,6 +51,7 @@ class TradingPairAdmin(admin.ModelAdmin):
 class PositionAdmin(admin.ModelAdmin):
     list_display = (
         'trading_pair',
+        'user',
         'side',
         'size',
         'entry_price',
