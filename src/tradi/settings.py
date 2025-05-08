@@ -38,6 +38,7 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     'django_celery_beat',
+    'django_filters',
     'drf_yasg',
     'rest_framework',
     'rest_framework_api_key',
@@ -122,7 +123,10 @@ USE_TZ = True
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ],
 }
 
 SWAGGER_SETTINGS = {'SECURITY_DEFINITIONS': {'Api-Key': {'type': 'apiKey', 'name': 'Authorization', 'in': 'header'}}}

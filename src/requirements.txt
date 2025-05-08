@@ -11,6 +11,7 @@ click-repl==0.3.0
 cron-descriptor==1.4.5
 Django==5.2
 django-celery-beat==2.8.0
+django-filter==25.1
 django-fernet-encrypted-fields==0.3.0
 django-timezone-field==7.1
 djangorestframework==3.16.0

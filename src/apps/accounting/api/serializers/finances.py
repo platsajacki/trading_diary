@@ -1,5 +1,6 @@
-from accounting.models import FinancialAsset, TradingPair
 from rest_framework import serializers
+
+from apps.accounting.models import FinancialAsset, TradingPair
 
 
 class FinancialAssetSerializer(serializers.ModelSerializer):

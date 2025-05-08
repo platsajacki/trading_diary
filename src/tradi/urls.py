@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='docs-swagger'),
     re_path(r'^api/v1/docs(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    path('api/v1/', include('accounting.urls')),
+    path('api/v1/', include('apps.accounting.urls')),
 ]

@@ -1,6 +1,6 @@
 # from rest_framework import serializers
 
-# from accounting.models import Position
+# from apps.accounting.models import Position
 
 
 # class PositionCreateSerializer(serializers.ModelSerializer):
