@@ -1,5 +1,0 @@
-from bybit.models.accesses import ByBitAccess
-
-__all__ = [
-    'ByBitAccess',
-]
