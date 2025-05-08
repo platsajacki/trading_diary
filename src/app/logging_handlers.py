@@ -1,6 +1,8 @@
+import logging
 from logging import Handler, LogRecord, getLogger
 from os import getenv
 
+import sqlparse
 from telebot import TeleBot
 from telebot.util import antiflood
 
@@ -27,3 +29,16 @@ class TelegramHandler(Handler):
                 self.chat_id,
                 log_entry[i : i + self.MAX_MESSAGE_LENGTH],
             )
+
+
+class SQLFormatterFilter(logging.Filter):
+    def filter(self, record: logging.LogRecord) -> bool:
+        formatted_message = record.getMessage()
+        record.msg = sqlparse.format(
+            formatted_message,
+            reindent=True,
+            keyword_case='upper',
+            indent_width=4,
+        )
+        record.args = ()
+        return True

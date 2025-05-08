@@ -11,6 +11,9 @@ if TYPE_CHECKING:
 
 
 class TradingPairQuerySet(QuerySet['TradingPair']):
+    def with_select_related(self) -> TradingPairQuerySet:
+        return self.select_related('base_asset', 'quote_asset')
+
     def annotate_symbol(self) -> TradingPairQuerySet:
         return self.annotate(
             pair_symbol=Concat(
@@ -28,6 +31,7 @@ class TradingPairQuerySet(QuerySet['TradingPair']):
                 base_asset__market=market_type,
                 quote_asset__market=market_type,
             )
+            .with_select_related()
             .first()
         )
 
@@ -38,3 +42,6 @@ class TradingPairManager(Manager['TradingPair']):
 
     def get_by_symbol(self, symbol: str, market_type: MarketType | str) -> TradingPair | None:
         return self.get_queryset().get_by_symbol(symbol, market_type)
+
+    def with_select_related(self) -> TradingPairManager:
+        return self.get_queryset().with_select_related()

@@ -191,6 +191,11 @@ LOGGING: dict[str, Any] = {
             'datefmt': DATETIME_FORMATTER,
         },
     },
+    'filters': {
+        'sql_formatter': {
+            '()': 'app.logging_handlers.SQLFormatterFilter',
+        },
+    },
     'handlers': {
         'console': {
             'level': 'WARNING',
@@ -237,6 +242,12 @@ LOGGING: dict[str, Any] = {
             'level': 'DEBUG',
             'propagate': False,
         },
+        'django.db.backends': {
+            'handlers': ['timed_rotating_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+            'filters': ['sql_formatter'],
+        },
         'telegram': {
             'handlers': ['console'],
             'level': 'DEBUG',
@@ -252,3 +263,4 @@ if not DEBUG:
     LOGGING['loggers']['celery']['level'] = 'INFO'
     LOGGING['loggers']['main']['handlers'] = ['console', 'timed_rotating_file']
     LOGGING['loggers']['telegram']['handlers'] = ['console', 'timed_rotating_file', 'telegram']
+    del LOGGING['loggers']['django.db.backends']

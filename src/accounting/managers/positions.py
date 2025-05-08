@@ -12,7 +12,6 @@ if TYPE_CHECKING:
     from users.models import User
 
 
-
 class PositionQuerySet(QuerySet['Position']):
     def with_select_related(self) -> PositionQuerySet:
         return self.select_related('trading_pair', 'user')
