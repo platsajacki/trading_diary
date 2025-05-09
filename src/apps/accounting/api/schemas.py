@@ -1,4 +1,4 @@
-from rest_framework import status
+from rest_framework import serializers, status
 
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -46,10 +46,22 @@ COMMON_ERRORS = {
 TRADING_PAIR_TAG = 'TradingPair'
 
 
+exchanges_field = serializers.ListField(
+    child=serializers.DictField(
+        child=TradingPairSerializer(many=True),
+    ),
+)
+
+
 class TradingPairListAPIViewSchema:
+
+    class TradingPairResponseSchema(serializers.Serializer):
+        ByBit = exchanges_field
+        KuCoin = exchanges_field
+
     get = swagger_auto_schema(
-        operation_description='Возвращает список торговых пар.',
-        responses={status.HTTP_200_OK: TradingPairSerializer} | COMMON_ERRORS,
+        operation_description='Возвращает список торговых пар, р.',
+        responses={status.HTTP_200_OK: TradingPairResponseSchema} | COMMON_ERRORS,
         tags=[TRADING_PAIR_TAG],
         query_serializer=TradingPairFilterSet.as_serializer(),
     )
