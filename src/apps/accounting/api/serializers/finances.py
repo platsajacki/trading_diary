@@ -1,5 +1,8 @@
+from collections import defaultdict
+
 from rest_framework import serializers
 
+from apps.accounting.managers.finances import TradingPairQuerySet
 from apps.accounting.models import FinancialAsset, TradingPair
 
 
@@ -27,6 +30,28 @@ class FinancialAssetSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
 
+class TradingPairListSerializer(serializers.ListSerializer):
+    """
+    Сериализатор для списка торговых пар.
+    Группирует торговые пары по биржам и сериализует их.
+    """
+
+    def to_representation(self, data: TradingPairQuerySet | None) -> defaultdict:  # type: ignore[override]
+        exchanges: defaultdict = defaultdict(lambda: defaultdict(list))
+        if data is None:
+            return exchanges
+        for pair in data:
+            if self.child is None:
+                raise ValueError('Child serializer is not set.')
+            serialized_pair = self.child.to_representation(pair)
+            exchanges[pair.base_asset.exchange][pair.base_asset.market].append(serialized_pair)
+        return exchanges
+
+    @property
+    def data(self) -> dict:  # type: ignore[override]
+        return self.to_representation(self.instance)
+
+
 class TradingPairSerializer(serializers.ModelSerializer):
     """
     Сериализатор для модели TradingPair.
@@ -43,6 +68,7 @@ class TradingPairSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TradingPair
+        list_serializer_class = TradingPairListSerializer
         fields = [
             'symbol',
             'base_asset',

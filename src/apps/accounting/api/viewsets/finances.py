@@ -1,5 +1,4 @@
 from django.utils.decorators import method_decorator
-
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 

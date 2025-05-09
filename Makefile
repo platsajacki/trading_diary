@@ -41,4 +41,4 @@ shell:
 	python src/manage.py shell
 
 test:
-	pytest --cov=src src/tests --blockage --cov-report term-missing
+	pytest --cov=src src/_tests --blockage --cov-report term-missing

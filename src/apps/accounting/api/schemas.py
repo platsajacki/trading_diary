@@ -1,6 +1,7 @@
+from rest_framework import status
+
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
 
 from apps.accounting.api.serializers.finances import TradingPairSerializer
 from apps.accounting.api.viewsets.filters.finances import TradingPairFilterSet
