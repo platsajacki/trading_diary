@@ -129,7 +129,11 @@ REST_FRAMEWORK = {
     ],
 }
 
-SWAGGER_SETTINGS = {'SECURITY_DEFINITIONS': {'Api-Key': {'type': 'apiKey', 'name': 'Authorization', 'in': 'header'}}}
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Api-Key': {'type': 'apiKey', 'name': 'Authorization', 'in': 'header'},
+    },
+}
 SWAGGER_USE_COMPAT_RENDERERS = False
 
 # ======================================================

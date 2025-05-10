@@ -1,10 +1,11 @@
-from rest_framework import serializers, status
+from rest_framework import status
 
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from apps.accounting.api.serializers.finances import TradingPairSerializer
 from apps.accounting.api.viewsets.filters.finances import TradingPairFilterSet
+from apps.accounting.models.enams import Exchange, MarketType
 
 ERROR_403 = openapi.Schema(
     type=openapi.TYPE_OBJECT,
@@ -46,22 +47,33 @@ COMMON_ERRORS = {
 TRADING_PAIR_TAG = 'TradingPair'
 
 
-exchanges_field = serializers.ListField(
-    child=serializers.DictField(
-        child=TradingPairSerializer(many=True),
-    ),
-)
-
-
 class TradingPairListAPIViewSchema:
-
-    class TradingPairResponseSchema(serializers.Serializer):
-        ByBit = exchanges_field
-        KuCoin = exchanges_field
-
-    get = swagger_auto_schema(
-        operation_description='Возвращает список торговых пар, р.',
-        responses={status.HTTP_200_OK: TradingPairResponseSchema} | COMMON_ERRORS,
+    schema = openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        description=f'Название бирж, которые доступны в системе. Например: {Exchange._value2member_map_}',
+        additional_properties=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            description=f'Название рынка, на котором торгуется актив. Например: {MarketType._value2member_map_}',
+            additional_properties=openapi.Schema(
+                type=openapi.TYPE_ARRAY,
+                items=openapi.Schema(
+                    type=openapi.TYPE_OBJECT, ref=f'#/definitions/{TradingPairSerializer.Meta.ref_name}'
+                ),
+            ),
+        ),
+    )
+    resoponse_200 = openapi.Response(
+        description='Список торговых пар.',
+        schema=schema,
+    )
+    retrieve = swagger_auto_schema(
+        operation_description='Возвращает информацию о торговой паре.',
+        responses={status.HTTP_200_OK: TradingPairSerializer} | COMMON_ERRORS,
+        tags=[TRADING_PAIR_TAG],
+    )
+    list = swagger_auto_schema(
+        operation_description='Возвращает список торговых пар, распределенных по биржам и рынкам.',
+        responses={status.HTTP_200_OK: resoponse_200} | COMMON_ERRORS,
         tags=[TRADING_PAIR_TAG],
         query_serializer=TradingPairFilterSet.as_serializer(),
     )

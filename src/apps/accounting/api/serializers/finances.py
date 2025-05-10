@@ -78,3 +78,4 @@ class TradingPairSerializer(serializers.ModelSerializer):
             'modified_at',
         ]
         read_only_fields = fields
+        ref_name = 'TradingPair'
