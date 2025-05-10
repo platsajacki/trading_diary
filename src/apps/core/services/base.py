@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from typing import Any
 
-from core.exceptions import NotImplementedMethodError
+from apps.core.exceptions import NotImplementedMethodError
 
 
 class BaseService(metaclass=ABCMeta):

@@ -30,3 +30,10 @@ class PositionSide(models.TextChoices):
 
     LONG = 'LONG', 'Long'
     SHORT = 'SHORT', 'Short'
+
+
+class TralingStopType(models.TextChoices):
+    """Тип трейлинг-стопа"""
+
+    FIXED = 'FIXED', 'Фиксированный'
+    PERCENTAGE = 'PERCENTAGE', 'Процентный'

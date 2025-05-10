@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from django.db.models import CharField, F, Manager, QuerySet
 from django.db.models.functions import Concat
 
-from apps.accounting.models.enams import MarketType
+from apps.accounting.models.enums import Exchange, MarketType
 
 if TYPE_CHECKING:
     from apps.accounting.models import Position
@@ -14,7 +14,12 @@ if TYPE_CHECKING:
 
 class PositionQuerySet(QuerySet['Position']):
     def with_select_related(self) -> PositionQuerySet:
-        return self.select_related('trading_pair', 'user')
+        return self.select_related(
+            'trading_pair',
+            'user',
+            'trading_pair__base_asset',
+            'trading_pair__quote_asset',
+        )
 
     def annotate_symbol(self) -> PositionQuerySet:
         return self.annotate(
@@ -25,7 +30,7 @@ class PositionQuerySet(QuerySet['Position']):
             )
         )
 
-    def get_by_symbol(self, symbol: str, market: MarketType) -> Position | None:
+    def get_by_symbol(self, symbol: str, market: MarketType, exchange: Exchange | str) -> Position | None:
         return (
             self.annotate_symbol()
             .with_select_related()
@@ -33,6 +38,8 @@ class PositionQuerySet(QuerySet['Position']):
                 pair_symbol=symbol,
                 trading_pair__base_asset__market=market,
                 trading_pair__quote_asset__market=market,
+                trading_pair__quote_asset__exchange=exchange,
+                trading_pair__base_asset__exchange=exchange,
             )
             .first()
         )
@@ -51,8 +58,8 @@ class PositionManager(Manager['Position']):
     def annotate_symbol(self) -> PositionQuerySet:
         return self.get_queryset().annotate_symbol()
 
-    def get_by_symbol(self, symbol: str, market: MarketType) -> Position | None:
-        return self.get_queryset().get_by_symbol(symbol, market)
+    def get_by_symbol(self, symbol: str, market: MarketType, exchange: Exchange | str) -> Position | None:
+        return self.get_queryset().get_by_symbol(symbol, market, exchange)
 
     def get_by_user(self, user: User) -> PositionQuerySet:
         return self.get_queryset().get_by_user(user)

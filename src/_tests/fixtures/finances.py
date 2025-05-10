@@ -2,7 +2,7 @@ import pytest
 
 from _tests import FixtureFactory
 from apps.accounting.models import FinancialAsset, TradingPair
-from apps.accounting.models.enams import AssetType, Exchange, MarketType
+from apps.accounting.models.enums import AssetType, Exchange, MarketType
 
 
 def get_bybit_financial_asset_schema(
@@ -15,7 +15,6 @@ def get_bybit_financial_asset_schema(
             'market': market,
             'exchange': exchange,
         },
-        iterations=iterations,
     ).create()
 
 

@@ -5,7 +5,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 from apps.accounting.api.serializers.finances import TradingPairSerializer
 from apps.accounting.api.viewsets.filters.finances import TradingPairFilterSet
-from apps.accounting.models.enams import Exchange, MarketType
+from apps.accounting.models.enums import Exchange, MarketType
 
 ERROR_403 = openapi.Schema(
     type=openapi.TYPE_OBJECT,

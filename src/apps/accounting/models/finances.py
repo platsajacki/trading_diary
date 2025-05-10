@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import UniqueConstraint
 
 from apps.accounting.managers.finances import TradingPairManager
-from apps.accounting.models.enams import AssetType, Exchange, MarketType
+from apps.accounting.models.enums import AssetType, Exchange, MarketType
 from apps.accounting.validators import validate_compatible_assets
 from apps.core.models import TimestampedModel
 

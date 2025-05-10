@@ -55,7 +55,6 @@ class PositionAdmin(admin.ModelAdmin):
         'side',
         'size',
         'entry_price',
-        'mark_price',
         'leverage',
         'opened_at',
         'closed_at',
