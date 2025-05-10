@@ -9,7 +9,7 @@ from apps.accounting.models.finances import TradingPair
 
 
 @pytest.mark.usefixtures('bybit_futures_trading_pairs', 'bybit_spot_trading_pairs')
-class TestTradingPairListAPIView:
+class TestTradingPairViewSet:
     url = reverse('api:v1:accounting:trading-pair-list')
 
     def test_anonymous_user(self, client: APIClient):

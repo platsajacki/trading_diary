@@ -47,7 +47,7 @@ COMMON_ERRORS = {
 TRADING_PAIR_TAG = 'TradingPair'
 
 
-class TradingPairListAPIViewSchema:
+class TradingPairViewSetSchema:
     schema = openapi.Schema(
         type=openapi.TYPE_OBJECT,
         description=f'Название бирж, которые доступны в системе. Например: {Exchange._value2member_map_}',
