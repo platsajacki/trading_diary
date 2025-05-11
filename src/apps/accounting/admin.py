@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from apps.accounting.models import FinancialAsset, TradingPair
-from apps.accounting.models.positions import Position
+from apps.accounting.models.positions import Position, PositionComment
 
 
 @admin.register(FinancialAsset)
@@ -61,3 +61,13 @@ class PositionAdmin(admin.ModelAdmin):
     )
     list_filter = ('side', 'trading_pair')
     search_fields = ('trading_pair', 'side')
+
+
+@admin.register(PositionComment)
+class PositionCommentAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'position',
+        'created_at',
+        'modified_at',
+    )

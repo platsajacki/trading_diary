@@ -47,6 +47,9 @@ class PositionQuerySet(QuerySet['Position']):
     def get_by_user(self, user: User) -> PositionQuerySet:
         return self.filter(user=user).with_select_related().annotate_symbol()
 
+    def with_commets(self) -> PositionQuerySet:
+        return self.prefetch_related('comments').order_by('-comments__created_at')
+
 
 class PositionManager(Manager['Position']):
     def get_queryset(self) -> PositionQuerySet:

@@ -4,7 +4,12 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from apps.accounting.api.serializers.finances import TradingPairSerializer
-from apps.accounting.api.viewsets.filters.finances import TradingPairFilterSet
+from apps.accounting.api.serializers.positions import (
+    PositionCreateSerializer,
+    PositionReadSerializer,
+    PositionUpdateSerializer,
+)
+from apps.accounting.api.viewsets.filters.finances import PositionFilterSet, TradingPairFilterSet
 from apps.accounting.models.enums import Exchange, MarketType
 
 ERROR_403 = openapi.Schema(
@@ -44,7 +49,9 @@ COMMON_ERRORS = {
     status.HTTP_404_NOT_FOUND: ERROR_404,
 }
 
-TRADING_PAIR_TAG = 'TradingPair'
+TRADING_PAIR_TAG = 'TradingPairs'
+POSITION_TAG = 'Positions'
+POSITION_COMMENT_TAG = 'PositionComments'
 
 
 class TradingPairViewSetSchema:
@@ -76,4 +83,53 @@ class TradingPairViewSetSchema:
         responses={status.HTTP_200_OK: resoponse_200} | COMMON_ERRORS,
         tags=[TRADING_PAIR_TAG],
         query_serializer=TradingPairFilterSet.as_serializer(),
+    )
+
+
+class PositionViewSetSchema:
+    create = swagger_auto_schema(
+        operation_description='Создает позицию.',
+        request_body=PositionCreateSerializer,
+        responses={status.HTTP_201_CREATED: PositionReadSerializer} | COMMON_ERRORS,
+        tags=[POSITION_TAG],
+    )
+    partial_update = swagger_auto_schema(
+        operation_description='Обновляет позицию.',
+        request_body=PositionUpdateSerializer,
+        responses={status.HTTP_200_OK: PositionReadSerializer} | COMMON_ERRORS,
+        tags=[POSITION_TAG],
+    )
+    retrieve = swagger_auto_schema(
+        operation_description='Возвращает информацию о позиции.',
+        responses={status.HTTP_200_OK: PositionReadSerializer} | COMMON_ERRORS,
+        tags=[POSITION_TAG],
+    )
+    list = swagger_auto_schema(
+        operation_description='Возвращает список позиций.',
+        responses=COMMON_ERRORS,
+        tags=[POSITION_TAG],
+        query_serializer=PositionFilterSet.as_serializer(),
+    )
+    destroy = swagger_auto_schema(
+        operation_description='Удаляет позицию.',
+        responses=COMMON_ERRORS,
+        tags=[POSITION_TAG],
+    )
+
+
+class PositionCommentViewSetSchema:
+    create = swagger_auto_schema(
+        operation_description='Создает комментарий к позиции.',
+        responses=COMMON_ERRORS,
+        tags=[POSITION_COMMENT_TAG],
+    )
+    partial_update = swagger_auto_schema(
+        operation_description='Обновляет комментарий к позиции.',
+        responses=COMMON_ERRORS,
+        tags=[POSITION_COMMENT_TAG],
+    )
+    destroy = swagger_auto_schema(
+        operation_description='Удаляет комментарий к позиции.',
+        responses=COMMON_ERRORS,
+        tags=[POSITION_COMMENT_TAG],
     )

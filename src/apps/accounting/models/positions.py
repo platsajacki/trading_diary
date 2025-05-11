@@ -103,6 +103,7 @@ class Position(TimestampedModel):
     class Meta:
         verbose_name = 'Позиция'
         verbose_name_plural = 'Позиции'
+        ordering = ['-opened_at']
 
     def __str__(self):
         return f'Позиция {self.trading_pair} ({self.side})'
@@ -124,3 +125,30 @@ class Position(TimestampedModel):
         """Проверяет корректность данных перед сохранением."""
         self.clean_traling_stop()
         return super().clean()
+
+
+class PositionComment(TimestampedModel):
+    position = models.ForeignKey(
+        Position,
+        on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name='Позиция',
+    )
+    chart_link = models.URLField(
+        'Ссылка на график',
+        null=True,
+        blank=True,
+        help_text='Ссылка на график, к которому относится комментарий',
+    )
+    comment = models.TextField(
+        verbose_name='Комментарий',
+        max_length=2048,
+    )
+
+    class Meta:
+        verbose_name = 'Комментарий к позиции'
+        verbose_name_plural = 'Комментарии к позициям'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'Комментарий для {self.position} от {self.created_at:%H:%M %Y-%m-%d}'
